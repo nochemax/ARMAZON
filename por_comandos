@@ -1,0 +1,124 @@
+
+void comando(){
+  myGLCD.clrScr();
+  while(contadormenu==2){
+    consola();
+    comando_lcd();
+    data = Psx.read();
+    delay(75);
+    if (data & psxR1){
+      contadormenu++;
+    }
+    if (data & psxL1){
+      contadormenu--;
+    }
+
+    while(keyboard.available() > 0){
+
+      char key = keyboard.read(); 
+
+      Serial.write(key);
+
+      if (key != PS2_ENTER) 
+        miString = miString + key; // construie String char a char
+
+      if (key == PS2_ENTER) {
+
+        Serial.println(); // nueva linea
+
+        if (miString == "saluda"){                           //########################### COMANDO SALUDA ############################################
+          Serial.println("armazon saludando");
+
+          for(pos2 = 41; pos2 < 131; pos2 += 5){ //pos2=servox=basex
+            myservox.write(pos2);             
+            delay(50);
+          }
+          for(pos1 = 51; pos1 < 91; pos1 += 5){ //pos1=servoy=codo                                  
+            myservoy.write(pos1);             
+            delay(50);
+          }
+          for(pos3 = 31; pos3 < 111; pos3 += 5){   //pos1=servo1y=codoy                         
+            myservo1y.write(pos3);             
+            delay(50);
+          }  
+          for(pos3 = 111; pos3 >= 31; pos3 -= 5){   //pos1=servo1y=codoy                         
+            myservo1y.write(pos3);             
+            delay(50);
+          }  
+          for(pos2 = 131; pos2 >= 41; pos2 -= 5){                               
+            myservox.write(pos2);             
+            delay(50);
+          }
+          for(pos1 = 91; pos1 >= 51; pos1 -= 5){   //pos1=servo1y=codoy                         
+            myservoy.write(pos1);             
+            delay(50);
+          } 
+
+        }
+        else if(miString == "estirate") {         //############################################ COMANDO ESIRATE ##################################
+          Serial.print("armazon estirando");
+          
+           for(pos1 = 51; pos1 < 91; pos1 += 5){ //pos1=servoy=basey                                  
+           myservoy.write(pos1);             
+           delay(50);
+           }
+           for(pos3 = 31; pos3 < 136; pos3 += 5){   //pos3=servo1y=codoy                         
+           myservo1y.write(pos3);             
+           delay(50);
+           }   
+           for(pos3 = 136; pos3 >= 31; pos3 -= 5){                      
+           myservo1y.write(pos3);             
+           delay(50);
+           }
+           for(pos1 = 91; pos1 >= 51; pos1 -= 5){ //pos1=servoy=basey                                  
+           myservoy.write(pos1);             
+           delay(50);
+           }
+        }
+        else if(miString == "cuadrado") {                //######################################COMANDO CUADRADO############################################
+          Serial.println("armazon cuadrado");
+          for(pos2 = 41; pos2 < 91; pos2 += 5){ //pos2=servox=basex
+            myservox.write(pos2);             
+            delay(50);
+          }
+          for(pos3 = 31; pos3>=1; pos3 -= 5){   //pos3=servo1y=codoy                         
+            myservo1y.write(pos3);             
+            delay(50);
+          }  
+          for(pos2 = 91; pos2 >= 41; pos2 -= 5){  //pos2=servox=basex                          
+            myservox.write(pos2);             
+            delay(50);
+          }
+          for(pos3 = 1; pos3 <= 31; pos3 += 5){  //pos3=servo1y=codoy                    
+            myservo1y.write(pos3);             
+            delay(50);
+          }
+      }
+        else if(miString == "descansa") {                              //################# COMANDO DESCANSA ##################
+          Serial.println("armazon descansando");
+          pos1 = constrain(pos1, 7, 180);
+          myservoy.write(pos1);
+          delay(50);
+          pos2 = constrain(pos2, 7, 180);
+          myservox.write(pos2);
+          delay(50);
+          pos3 = constrain(pos3, 2, 110);
+          myservo1y.write(pos3);
+          delay(50);
+          pos4 = constrain(pos4, 2, 150);
+          myservo1x.write(pos4);
+          delay(50);
+          pos5 = constrain(pos5, 2, 100);
+          myservo2x.write(pos5);
+          delay(50);
+
+        }
+        Serial.print("CONSOLA INTRODUCIR COMANDO:"); // nueva linea
+        miString = ""; // vaciar miString para reempezar
+
+      }
+
+    }
+
+  }
+}
