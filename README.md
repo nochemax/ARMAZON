@@ -3,6 +3,8 @@ ARMAZON
 
 Brazo robotico psx Makers
 
+programación C
+
 
 https://www.youtube.com/watch?v=Qccbe396RtQ
 
